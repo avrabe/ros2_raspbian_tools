@@ -1,6 +1,6 @@
-FROM debian:stretch
+FROM ubuntu:xenial
 RUN apt update
-RUN apt install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
     cmake \
@@ -16,7 +16,12 @@ RUN apt install -y --no-install-recommends \
     python3-setuptools \
     python3-pyparsing \
     qemu-user-static \
-    software-properties-common
+    software-properties-common \
+    apt-utils
+COPY ros2_dependencies.bash /
+RUN chmod +x /ros2_dependencies.bash
+RUN /ros2_dependencies.bash
+RUN apt-get install -y python3-colcon-common-extensions python-rosdep python3-vcstool
 ENV RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PATH /usr/bin
 ENV RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PREFIX arm-linux-gnueabihf
 ENV RASPBERRYPI_CROSS_COMPILE_SYSROOT /raspbian_ros2_root/
@@ -24,3 +29,9 @@ ENV CC /usr/bin/arm-linux-gnueabihf-gcc
 ENV CXX /usr/bin/arm-linux-gnueabihf-g++
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
+
+VOLUME ["/polly"]
+VOLUME ["/ros2_ws"]
+VOLUME ["/raspbian_ros2_root"]
+
+WORKDIR /ros2_ws

@@ -7,8 +7,7 @@ PYTHON_MINOR=5
 
 #export POCO_ROOT="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/lib"
 
-src/ament/ament_tools/scripts/ament.py build \
-    --isolated \
+colcon build --symlink-install \
     --cmake-args \
     -DCMAKE_FIND_ROOT_PATH="/ros2_ws/install_isolated" \
     -DCMAKE_TOOLCHAIN_FILE="/polly/raspberrypi3-cxx11.cmake" \
@@ -30,5 +29,4 @@ src/ament/ament_tools/scripts/ament.py build \
     -DPoco_LIBRARY_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/lib" \
     -DPoco_INCLUDE_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/include" \
     -DPoco_LIBRARIES="dl;PocoFoundation" \
-    -- \
-    --parallel $*
+    $*

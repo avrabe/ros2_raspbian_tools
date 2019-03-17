@@ -1,16 +1,13 @@
 #!/bin/bash
-
 set -euf -o pipefail
 
 PYTHON_MAJOR=3
 PYTHON_MINOR=5
 
-#export POCO_ROOT="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/lib"
-
 colcon build --symlink-install \
     --cmake-args \
     -DCMAKE_FIND_ROOT_PATH="/ros2_ws/install_isolated" \
-    -DCMAKE_TOOLCHAIN_FILE="/polly/raspberrypi3-cxx11.cmake" \
+    -DCMAKE_TOOLCHAIN_FILE="/polly/raspberrypi1-cxx11-pic.cmake" \
     -DPYTHON_INCLUDE_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/include/python${PYTHON_MAJOR}.${PYTHON_MINOR}m" \
     -DPYTHON_LIBRARY="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/lib/${RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PREFIX}/libpython${PYTHON_MAJOR}.${PYTHON_MINOR}m.so" \
     -DPYTHON_SOABI="cpython-${PYTHON_MAJOR}${PYTHON_MINOR}m-${RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PREFIX}" \

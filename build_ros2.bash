@@ -6,6 +6,7 @@ PYTHON_MINOR=5
 
 colcon build --symlink-install \
     --cmake-args \
+    -DBUILD_TESTING=OFF \
     -DCMAKE_FIND_ROOT_PATH="/ros2_ws/install_isolated" \
     -DCMAKE_TOOLCHAIN_FILE="/polly/raspberrypi1-cxx11-pic.cmake" \
     -DPYTHON_INCLUDE_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/include/python${PYTHON_MAJOR}.${PYTHON_MINOR}m" \
@@ -26,4 +27,7 @@ colcon build --symlink-install \
     -DPoco_LIBRARY_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/lib" \
     -DPoco_INCLUDE_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/include" \
     -DPoco_LIBRARIES="dl;PocoFoundation" \
+    -DLog4cxx_LIBRARY="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/lib/${RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PREFIX}/liblog4cxx.so" \
+    -DLog4cxx_INCLUDE_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/include" \
+    -DLog4cxx_LIBRARY_DIR="${RASPBERRYPI_CROSS_COMPILE_SYSROOT}/usr/lib" \
     $*

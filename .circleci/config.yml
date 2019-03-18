@@ -1,15 +1,15 @@
 version: 2
 jobs:
   build:
-    machine: True
-
+    docker:
+      - image: circleci/python:3.7.2-stretch
     steps:
       - checkout
       - run:
           name: Greeting
           command: |
                   sudo apt-get --allow-unauthenticated update
-                  sudo apt-get install -y qemu-user-static python3-parted python3-requests
+                  sudo apt-get install -y qemu-user-static python-parted python3-requests
                   mkdir -p ~/ros2_rpi/ros2_ws/src ~/ros2_rpi/ros2_raspbian_tools ~/ros2_rpi/rpi-root
                   cd ~/ros2_rpi/ros2_ws
                   wget https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos

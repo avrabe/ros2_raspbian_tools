@@ -14,7 +14,7 @@ before_install:
   - cd ~/ros2_rpi/ros2_ws
   - wget https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos
   - cd ~/ros2_rpi
-  - git clone https://github.com/ruslo/polly.git
+  - git clone https://github.com/avrabe/polly.git
   - cp $TRAVIS_BUILD_DIR/*.py $TRAVIS_BUILD_DIR/*.bootstrap $TRAVIS_BUILD_DIR/*.txt $TRAVIS_BUILD_DIR/*.bash ~/ros2_rpi/ros2_raspbian_tools
 script:
   - cd $TRAVIS_BUILD_DIR/

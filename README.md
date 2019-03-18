@@ -1,6 +1,7 @@
 ROS2 Docker crosscompiling tools for Raspberry Pi
 =================================================
 
+TODO: Rework after changes
 
 Prepare a ROS2 workspace and fetch any dependencies
 ---------------------------------------------------

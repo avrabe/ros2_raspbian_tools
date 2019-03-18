@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Print the Current Time
           command: |
-                cd $CIRCLE_WORKING_DIRECTORY/
+                cd /home/circleci/project
                 docker pull avrabe/ros2-raspbian_crosscompiler:latest
                 docker build --cache-from avrabe/ros2-raspbian_crosscompiler -f Dockerfile.bootstrap -t  ros2-raspbian:crosscompiler .
                 cd ~/ros2_rpi/ros2_raspbian_tools

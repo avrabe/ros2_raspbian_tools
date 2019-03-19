@@ -10,7 +10,8 @@ jobs:
                   mkdir -p ~/ros2_rpi/ros2_ws/src ~/ros2_rpi/rpi-root
                   sh -c 'while fuser /var/lib/apt/lists/lock >/dev/null 2>&1 ; do echo -en "\rWaiting for other software managers to finish..."; sleep 0.5; done'
                   sudo apt-get --allow-unauthenticated update
-                  sudo apt-get install -y qemu-user-static python-parted python3-requests python3
+                  sudo apt-get install -y qemu-user-static python3-requests python3 python3-pip libparted-dev build-essential
+                  sudo python3 -m pip install -U pyparted
       - run:
           name: Build the crosscompile docker
           command: |

@@ -7,11 +7,10 @@ jobs:
       - run:
           name: Prepare the Workspace
           command: |
-                  mkdir -p ~/ros2_rpi/ros2_ws/src ~/ros2_rpi/ros2_raspbian_tools ~/ros2_rpi/rpi-root
-                  cp *.py *.bootstrap *.txt *.bash ~/ros2_rpi/
+                  mkdir -p ~/ros2_rpi/ros2_ws/src ~/ros2_rpi/rpi-root
                   sh -c 'while fuser /var/lib/apt/lists/lock >/dev/null 2>&1 ; do echo -en "\rWaiting for other software managers to finish..."; sleep 0.5; done'
                   sudo apt-get --allow-unauthenticated update
-                  sudo apt-get install -y qemu-user-static python-parted python3-requests
+                  sudo apt-get install -y qemu-user-static python-parted python3-requests python3
       - run:
           name: Build the crosscompile docker
           command: |
@@ -21,7 +20,7 @@ jobs:
       - run:
           name: Prepare the raspbian image
           command: |
-                cd ~/ros2_rpi/ros2_raspbian_tools
+                cd /home/circleci/project
                 ./convert_raspbian_docker.py ros2-raspbian
                 ./convert_raspbian_docker.py -i raspbian_lite_latest ros2-raspbian
                 ./export_raspbian_image.py ros2-raspbian:lite ros2_dependencies.bash ros2-raspbian-rootfs.tar
@@ -31,5 +30,5 @@ jobs:
           command: |
                 git clone https://github.com/avrabe/polly.git ~/ros2_rpi/polly
                 wget https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos -o ~/ros2_rpi/ros2_ws/ros2.repos
-                docker run -it --rm -v ~/ros2_rpi/polly:/polly -v ~/ros2_rpi/ros2_ws:/ros2_ws -v ~/ros2_rpi/ros2_raspbian_tools/vcs_ros2.bash:/vcs_ros2.bash -v ~/ros2_rpi/rpi-root:/raspbian_ros2_root -w /ros2_ws  ros2-raspbian:crosscompiler  bash /vcs_ros2.bash
-                docker run -it --rm -v ~/ros2_rpi/polly:/polly -v ~/ros2_rpi/ros2_ws:/ros2_ws -v ~/ros2_rpi/ros2_raspbian_tools/build_ros2.bash:/build_ros2.bash -v ~/ros2_rpi/rpi-root:/raspbian_ros2_root -w /ros2_ws  ros2-raspbian:crosscompiler  bash /build_ros2.bash
+                docker run -it --rm -v ~/ros2_rpi/polly:/polly -v ~/ros2_rpi/ros2_ws:/ros2_ws -v /home/circleci/project/vcs_ros2.bash:/vcs_ros2.bash -v ~/ros2_rpi/rpi-root:/raspbian_ros2_root -w /ros2_ws  ros2-raspbian:crosscompiler  bash /vcs_ros2.bash
+                docker run -it --rm -v ~/ros2_rpi/polly:/polly -v ~/ros2_rpi/ros2_ws:/ros2_ws -v /home/circleci/project/build_ros2.bash:/build_ros2.bash -v ~/ros2_rpi/rpi-root:/raspbian_ros2_root -w /ros2_ws  ros2-raspbian:crosscompiler  bash /build_ros2.bash

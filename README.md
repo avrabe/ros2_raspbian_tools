@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/avrabe/ros2_raspbian_tools/tree/master.svg?style=svg)](https://circleci.com/gh/avrabe/ros2_raspbian_tools/tree/master)
+
 ROS2 Docker crosscompiling tools for Raspberry Pi
 =================================================
 

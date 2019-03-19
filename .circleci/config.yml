@@ -23,7 +23,6 @@ jobs:
           command: |
                 cd /home/circleci/project
                 ./convert_raspbian_docker.py ros2-raspbian
-                ./convert_raspbian_docker.py -i raspbian_lite_latest ros2-raspbian
                 ./export_raspbian_image.py ros2-raspbian:lite ros2_dependencies.bash ros2-raspbian-rootfs.tar
                 sudo tar -C ~/ros2_rpi/rpi-root -xf ros2-raspbian-rootfs.tar
       - run:

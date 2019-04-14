@@ -31,7 +31,7 @@ jobs:
                 echo polly
                 git clone https://github.com/avrabe/polly.git ~/ros2_rpi/polly
                 echo wget
-                wget https://raw.githubusercontent.com/ros2/ros2/crystal/ros2.repos -o ~/ros2_rpi/ros2_ws/ros2.repos
+                wget https://raw.githubusercontent.com/ros2/ros2/crystal/ros2.repos -O ~/ros2_rpi/ros2_ws/ros2.repos
                 echo checkout
                 docker run -it --rm -v ~/ros2_rpi/polly:/polly -v ~/ros2_rpi/ros2_ws:/ros2_ws -v /home/circleci/project/vcs_ros2.bash:/vcs_ros2.bash -v ~/ros2_rpi/rpi-root:/raspbian_ros2_root -w /ros2_ws  ros2-raspbian:crosscompiler  bash /vcs_ros2.bash
       - run:

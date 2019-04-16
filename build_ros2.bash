@@ -6,6 +6,7 @@ PYTHON_MINOR=5
 
 colcon build --symlink-install \
     --cmake-args \
+    --no-warn-unused-cli \
     -DBUILD_TESTING=OFF \
     -DCMAKE_FIND_ROOT_PATH="/ros2_ws/install_isolated" \
     -DCMAKE_TOOLCHAIN_FILE="/polly/raspberrypi1-cxx14-pic.cmake" \

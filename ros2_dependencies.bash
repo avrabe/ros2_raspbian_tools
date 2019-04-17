@@ -4,7 +4,7 @@ set -euf -o pipefail
 apt-get update
 apt-get -y --no-install-recommends install dirmngr
 
-echo "deb http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list
+echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list
 curl http://repo.ros2.org/repos.key | apt-key add -
 
 apt-get update

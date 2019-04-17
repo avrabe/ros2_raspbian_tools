@@ -12,10 +12,10 @@ touch src/ros2/demos/COLCON_IGNORE
 echo "run rosdep check"
 rosdep init
 rosdep update
-rosdep keys --from-paths src --ignore-src --rosdistro crystal
+rosdep resolve $(rosdep keys --from-paths src --ignore-src --rosdistro crystal) || true
 
 echo "start colcon"
-colcon build --symlink-install \
+colcon build --merge-install \
     --cmake-args \
     --no-warn-unused-cli \
     -DBUILD_TESTING=OFF \

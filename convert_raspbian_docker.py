@@ -61,7 +61,6 @@ def extract_root_partition(image_filename, force=False):
             filesystem = partition.fileSystem
             if filesystem.type == 'ext4':
                 root_partition_start = partition.geometry.start * sector_size
-                root_partition_end = partition.geometry.end * sector_size
                 root_partition_size = partition.geometry.length * sector_size
 
         with open(image_filename, 'rb') as f:

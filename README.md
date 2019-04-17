@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/362b42f974ee4426a51e508bf939619b)](https://app.codacy.com/app/avrabe/ros2_raspbian_tools?utm_source=github.com&utm_medium=referral&utm_content=avrabe/ros2_raspbian_tools&utm_campaign=Badge_Grade_Settings)
 [![CircleCI](https://circleci.com/gh/avrabe/ros2_raspbian_tools/tree/master.svg?style=svg)](https://circleci.com/gh/avrabe/ros2_raspbian_tools/tree/master)
 
 ROS2 Docker crosscompiling tools for Raspberry Pi

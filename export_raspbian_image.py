@@ -17,7 +17,7 @@ def main(docker_repository, script_file, tarball):
 
     cmd = ['docker', 'container', 'rm', container_name]
     subprocess.call(cmd, stderr=subprocess.DEVNULL)
-    
+
     try:
         cmd = [
             'docker', 'container', 'run', '-i', '--name', container_name, '-v',

@@ -9,7 +9,12 @@ touch src/ros-visualization/COLCON_IGNORE
 touch src/ros2/rviz/COLCON_IGNORE
 touch src/ros2/demos/COLCON_IGNORE
 
-echo start colcon
+echo "run rosdep check"
+rosdep init
+rosdep update
+rosdep keys --from-paths src --ignore-src --rosdistro crystal
+
+echo "start colcon"
 colcon build --symlink-install \
     --cmake-args \
     --no-warn-unused-cli \

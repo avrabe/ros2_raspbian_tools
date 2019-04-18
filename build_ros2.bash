@@ -16,8 +16,10 @@ rosdep resolve $(rosdep keys --from-paths src --ignore-src --rosdistro crystal) 
 
 echo "start colcon"
 colcon build --merge-install \
+    --cmake-force-configure \
     --cmake-args \
     --no-warn-unused-cli \
+    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
     -DBUILD_TESTING=OFF \
     -DCMAKE_FIND_ROOT_PATH="/ros2_ws/install_isolated" \
     -DCMAKE_TOOLCHAIN_FILE="/polly/raspberrypi1-cxx14-pic.cmake" \

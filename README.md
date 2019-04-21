@@ -5,6 +5,7 @@ ROS2 Docker crosscompiling tools for Raspberry Pi
 =================================================
 
 TODO: Rework after changes
+TODO: Link to https://index.ros.org/doc/ros2/Tutorials/Cross-compilation/ and https://github.com/ros-infrastructure/superflore as alternative ways.
 
 Prepare a ROS2 workspace and fetch any dependencies
 ---------------------------------------------------

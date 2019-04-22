@@ -6,8 +6,6 @@ RUN apt update && apt-get install -y --no-install-recommends curl ca-certificate
 RUN apt update && apt-get install -y --no-install-recommends \
     apt-transport-https \
     cmake \
-    g++-aarch64-linux-gnu \
-    g++-arm-linux-gnueabihf \
     git \
     gnupg2 \
     make \
@@ -21,15 +19,15 @@ RUN apt update && apt-get install -y --no-install-recommends \
     software-properties-common \
     apt-utils \
     wget \
-    build-essential \
+    build-essential gawk git texinfo bison \
     cppcheck && apt-get install -y \
     python3-colcon-common-extensions \
     python-rosdep \
     python3-vcstool && \
     python3 -m pip install -U setuptools && \
-    apt-get install -y build-essential gawk git texinfo bison && \
     rm -rf /var/lib/apt/lists/*
 ENV PATH="/opt/cross-pi-gcc/bin:${PATH}"
+ENV KERNEL=kernel
 RUN cd ~ && mkdir gcc_all && cd gcc_all && \
     wget https://ftpmirror.gnu.org/binutils/binutils-2.28.tar.bz2 && \
     wget https://ftpmirror.gnu.org/gcc/gcc-6.3.0/gcc-6.3.0.tar.gz && \
@@ -40,7 +38,7 @@ RUN cd ~ && mkdir gcc_all && cd gcc_all && \
     tar xf gcc-6.3.0.tar.gz && \
     cd ~/gcc_all/gcc-6.3.0 && contrib/download_prerequisites && \
     mkdir -p /opt/cross-pi-gcc && \
-    cd ~/gcc_all/linux && KERNEL=kernel make ARCH=arm INSTALL_HDR_PATH=/opt/cross-pi-gcc/arm-linux-gnueabihf headers_install && \
+    cd ~/gcc_all/linux && make ARCH=arm INSTALL_HDR_PATH=/opt/cross-pi-gcc/arm-linux-gnueabihf headers_install && \
     mkdir -p ~/gcc_all/build-binutils && cd ~/gcc_all/build-binutils && \
     ../binutils-2.28/configure --prefix=/opt/cross-pi-gcc --target=arm-linux-gnueabihf --with-arch=armv6 --with-fpu=vfp --with-float=hard --disable-multilib && \
     make -j 8 &&  make install && \

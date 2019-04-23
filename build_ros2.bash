@@ -14,17 +14,6 @@ rosdep init
 rosdep update
 rosdep resolve $(rosdep keys --from-paths src --ignore-src --rosdistro crystal) || true
 
-echo "find toolchain and adapt."
-find /raspbian_ros2_root -name crti.o
-mkdir -p /raspbian_ros2_root/usr/lib/arm-bcm2708hardfp-linux-gnueabi/
-ln -s /raspbian_ros2_root/usr/lib/arm-linux-gnueabihf /raspbian_ros2_root/usr/lib/arm-linux-gnueabihf/4.9.3
-
-echo "links some additional files"
-ln -s /raspbian_ros2_root/usr/include/arm-linux-gnueabihf/sys /raspbian_ros2_root/usr/include/sys
-ln -s /raspbian_ros2_root/usr/include/arm-linux-gnueabihf/bits /raspbian_ros2_root/usr/include/bits
-ln -s /raspbian_ros2_root/usr/include/arm-linux-gnueabihf/gnu /raspbian_ros2_root/usr/include/gnu
-ln -s /raspbian_ros2_root/usr/include/arm-linux-gnueabihf/asm /raspbian_ros2_root/usr/include/asm
-
 echo "start colcon"
 colcon build --merge-install \
     --cmake-force-configure \

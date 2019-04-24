@@ -14,7 +14,20 @@ rosdep init
 rosdep update
 rosdep resolve $(rosdep keys --from-paths src --ignore-src --rosdistro crystal) || true
 
-echo "start colcon"
+#echo "limits.h"
+#echo "#include <limits.h>" > /tmp/foo.c
+#/opt/cross-pi-gcc-8.3.0-0/bin/arm-linux-gnueabihf-g++ -M --sysroot /raspbian_ros2_root/ -mfpu=vfp -marm -mcpu=arm1176jzf-s -mfloat-abi=hard -mlittle-endian -munaligned-access /tmp/foo.c
+#
+#echo "###features.h - features"
+#echo "#include <features.h>" | /opt/cross-pi-gcc-8.3.0-0/bin/arm-linux-gnueabihf-cpp -dN | grep "#define __USE_"
+#
+#echo "### features.h - all predefined macros"
+#/opt/cross-pi-gcc-8.3.0-0/bin/arm-linux-gnueabihf-cpp -dM /dev/null
+#
+#echo "### features.h - all compiler defined macros"
+#/opt/cross-pi-gcc-8.3.0-0/bin/arm-linux-gnueabihf-gcc -E -dM - < /dev/null
+
+echo "### start colcon"
 colcon build --merge-install \
     --cmake-force-configure \
     --cmake-args \

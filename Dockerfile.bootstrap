@@ -6,6 +6,8 @@ RUN apt update && apt-get install -y --no-install-recommends curl ca-certificate
 RUN apt update && apt-get install -y --no-install-recommends \
     apt-transport-https \
     cmake \
+    g++-aarch64-linux-gnu \
+    g++-arm-linux-gnueabihf \
     git \
     gnupg2 \
     make \
@@ -19,23 +21,51 @@ RUN apt update && apt-get install -y --no-install-recommends \
     software-properties-common \
     apt-utils \
     wget \
-    build-essential gawk git texinfo bison \
+    build-essential \
     cppcheck && apt-get install -y \
     python3-colcon-common-extensions \
     python-rosdep \
     python3-vcstool && \
     python3 -m pip install -U setuptools && \
+    apt-get install -y build-essential gawk git texinfo bison && \
     rm -rf /var/lib/apt/lists/*
-ENV PATH "/opt/cross-pi-gcc-8.3.0-0/bin:${PATH}"
-ENV LD_LIBRARY_PATH "/opt/cross-pi-gcc-8.3.0-0/lib:${LD_LIBRARY_PATH}"
-RUN wget "https://sourceforge.net/projects/raspberry-pi-cross-compilers/files/Raspberry%20Pi%20GCC%20Cross-Compilers/GCC%208.3.0/Raspberry%20Pi%201%2C%20Zero/cross-gcc-8.3.0-pi_0-1.tar.gz/download" -O ~/cross-gcc-8.3.0-pi_0-1.tar.gz &&\
-    tar xzf  ~/cross-gcc-8.3.0-pi_0-1.tar.gz -C /opt && \
-    rm  ~/cross-gcc-8.3.0-pi_0-1.tar.gz
-ENV RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PATH /opt/cross-pi-gcc-8.3.0-0/bin/
+ENV PATH="/opt/cross-pi-gcc/bin:${PATH}"
+RUN cd ~ && mkdir gcc_all && cd gcc_all && \
+    wget https://ftpmirror.gnu.org/binutils/binutils-2.28.tar.bz2 && \
+    wget https://ftpmirror.gnu.org/gcc/gcc-6.3.0/gcc-6.3.0.tar.gz && \
+    wget https://ftpmirror.gnu.org/glibc/glibc-2.24.tar.bz2 && \
+    git clone --depth=1 https://github.com/raspberrypi/linux && \
+    tar xf binutils-2.28.tar.bz2 && \
+    tar xf glibc-2.24.tar.bz2 && \
+    tar xf gcc-6.3.0.tar.gz && \
+    cd ~/gcc_all/gcc-6.3.0 && contrib/download_prerequisites && \
+    mkdir -p /opt/cross-pi-gcc && \
+    cd ~/gcc_all/linux && KERNEL=kernel make ARCH=arm INSTALL_HDR_PATH=/opt/cross-pi-gcc/arm-linux-gnueabihf headers_install && \
+    mkdir -p ~/gcc_all/build-binutils && cd ~/gcc_all/build-binutils && \
+    ../binutils-2.28/configure --prefix=/opt/cross-pi-gcc --target=arm-linux-gnueabihf --with-arch=armv6 --with-fpu=vfp --with-float=hard --disable-multilib && \
+    make -j 8 &&  make install && \
+    sed -i.bak '1474s/file/file\[0\]/' ~/gcc_all/gcc-6.3.0/gcc/ubsan.c && \
+    cat -n ~/gcc_all/gcc-6.3.0/gcc/ubsan.c && \
+    mkdir -p ~/gcc_all/build-gcc && cd ~/gcc_all/build-gcc && \
+    ../gcc-6.3.0/configure --with-sysroot=/opt/cross-pi-gcc/arm-linux-gnueabihf/ --prefix=/opt/cross-pi-gcc --target=arm-linux-gnueabihf --enable-languages=c,c++,fortran --with-arch=armv6 --with-fpu=vfp --with-float=hard --disable-multilib && \
+    make -j8 all-gcc && make install-gcc && \
+    mkdir -p ~/gcc_all/build-glibc && cd ~/gcc_all/build-glibc && \
+    ../glibc-2.24/configure --prefix=/opt/cross-pi-gcc/arm-linux-gnueabihf --build=$MACHTYPE --host=arm-linux-gnueabihf --target=arm-linux-gnueabihf --with-arch=armv6 --with-fpu=vfp --with-float=hard --with-headers=/opt/cross-pi-gcc/arm-linux-gnueabihf/include --disable-multilib libc_cv_forced_unwind=yes && \
+    make install-bootstrap-headers=yes install-headers && \
+    make -j8 csu/subdir_lib && \
+    install csu/crt1.o csu/crti.o csu/crtn.o /opt/cross-pi-gcc/arm-linux-gnueabihf/lib && \
+    arm-linux-gnueabihf-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o /opt/cross-pi-gcc/arm-linux-gnueabihf/lib/libc.so && \
+    touch /opt/cross-pi-gcc/arm-linux-gnueabihf/include/gnu/stubs.h && \
+    cd ~/gcc_all/build-gcc   && make -j8 all-target-libgcc && make install-target-libgcc && \
+    cd ~/gcc_all/build-glibc && make -j8                   && make install && \
+    cd ~/gcc_all/build-gcc   && make -j8                   && make install && \
+    cd ~ && rm -rf ~/gcc_all && \
+    /opt/cross-pi-gcc/bin/arm-linux-gnueabihf-gcc --version
+ENV RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PATH /opt/cross-pi-gcc/bin/
 ENV RASPBERRYPI_CROSS_COMPILE_TOOLCHAIN_PREFIX arm-linux-gnueabihf
 ENV RASPBERRYPI_CROSS_COMPILE_SYSROOT /raspbian_ros2_root/
-ENV CC  /opt/cross-pi-gcc-8.3.0-0/bin/arm-linux-gnueabihf-gcc
-ENV CXX /opt/cross-pi-gcc-8.3.0-0/bin/arm-linux-gnueabihf-g++
+ENV CC  /opt/cross-pi-gcc/bin/arm-linux-gnueabihf-gcc
+ENV CXX /opt/cross-pi-gcc/bin/arm-linux-gnueabihf-g++
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
